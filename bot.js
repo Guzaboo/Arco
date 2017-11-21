@@ -74,6 +74,9 @@ client.on('message', message => {
       )
   }
 
+  if (message.author.id === 378711409753587714 && message.content.includes('exited with code 1')) {
+    message.channel.send('FIX IT FIX IT FIX IT <@187350722965274625>')
+  }
 
   console.log('Output of plain censor: ' + JSON.stringify(censor.getCategoryCounts(message.content)))
 
