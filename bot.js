@@ -74,7 +74,7 @@ client.on('message', message => {
       )
   }
   if (message.author.id === '144564006710018049') {
-  if (message.content.includes(",','  ,    .  ,-. ") || message.content.toLowerCase.includes('gay')) {
+  if (message.content.includes(",','  ,    .  ,-. ") || message.content.toLowerCase().includes('gay')) {
     message.delete()
   }
   }
