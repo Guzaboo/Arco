@@ -1,6 +1,6 @@
 {
   "name": "arco",
-  "version": "2.6.0",
+  "version": "2.6.2",
   "description": "Arco brings fear, what more could you want?",
   "main": "bot.js",
   "dependencies": {
