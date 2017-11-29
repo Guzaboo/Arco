@@ -73,16 +73,6 @@ client.on('message', message => {
         )
       )
   }
-  if (message.author.id === '144564006710018049') {
-  if (message.content.includes(",','  ,    .  ,-. ") || message.content.toLowerCase().includes('gay')) {
-    message.delete()
-  }
-  }
-
-  if (message.author.id === '378711409753587714' && message.content.includes('exited with code 1')) {
-    message.channel.send('FIX IT FIX IT FIX IT <@187350722965274625>')
-  }
-
   console.log('Output of plain censor: ' + JSON.stringify(censor.getCategoryCounts(message.content)))
 
   for (let i = 0; i < messageSplit.length; i++) {
