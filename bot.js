@@ -138,7 +138,17 @@ client.on('message', message => {
     } else if (message.content.charAt(0) == '?') {							// Commands for all
       switch (messageSplit[0].slice(1)) {
       case 'fortune':
-        exec('fortune -s ' + message.content.slice(messageSplit[0].length + 1), (err, stdout) => {	// Executes the fortune command
+        exec('fortune -s', (err, stdout) => {	// Executes the fortune command
+          if (err) {
+            console.log('Error encountered: ' + err)
+          }
+
+          message.channel.send(stdout, {'code': true})
+          message.delete()
+        })
+        break
+      case 'forune':
+        exec('fortune forune', (err, stdout) => {	// Executes the fortune command
           if (err) {
             console.log('Error encountered: ' + err)
           }
