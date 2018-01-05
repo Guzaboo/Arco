@@ -58,7 +58,6 @@ setInterval(checkIPChange, interval, publicIP)
 
 client.on('message', message => {
   console.log('\n' + Date() + ' | ' + message.author.username + ': ' + message.content)
-  console.log('Guild Name: ' + message.guild.name)
   console.log('Channel Name: ' + message.channel.name)
   const messageSplit = message.content.split(' ')
 
