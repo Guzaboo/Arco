@@ -140,7 +140,6 @@ client.on('message', message => {
   }
 
   if (!message.author.bot) {
-
     // Start main processing
 
     // Calculator abilities
@@ -184,29 +183,28 @@ client.on('message', message => {
         })
         break
 
-      case '🎱':
-        console.log('8ballin\'')
-        message.channel.send({ 'embed': {
-    'title': message.content.slice(1),
-    'description': ballResp[Math.floor(Math.random() * ballResp.length)],
-    'color': 0x000000,
-    'footer': {
-      'text': 'Asked by ' + message.author.username
-    },
-    'author': {
-      'name': client.username,
-      'icon_url': 'http://www.iconninja.com/files/776/590/392/ball-icon.png'
-    }
-  }})
-  message.delete()
-        break
-
       case 'word':
         console.log('Word')
         message.channel.send(randomWord(), {'code': true})
         message.delete()
         break
       }
+    } else if (message.content.substring(0, 2) == '🎱') {
+      console.log('8ballin\'')
+      message.channel.send({ 'embed': {
+        'title': message.content.slice(2),
+        'description': ballResp[Math.floor(Math.random() * ballResp.length)],
+        'author': {
+          'name': client.username,
+          'icon_url': 'http://www.iconninja.com/files/776/590/392/ball-icon.png'
+        },
+        'color': 0x000000,
+        'footer': {
+          'text': 'Asked by ' + message.author.username
+        }
+      }})
+      message.delete()
+
     } else if (message.author.id == config.admin && message.content.charAt(0) == '$') {			// Commands for the few
       let adminCommand = message.content.slice(1).split(' ')
       console.log('Admin Command Issued: ' + adminCommand)
