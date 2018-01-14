@@ -4,6 +4,7 @@ const Discord = require('discord.js'),
   parser = math.parser(),
   Profane = require('profane'),
   censor = new Profane(),
+  randomWord = require('random-word'),
   fs = require('fs'),
   http = require('http'),
   exec = require('child_process').exec
@@ -18,6 +19,29 @@ math.import({
 }, { override: true })
 
 const config = JSON.parse(fs.readFileSync('secrets.json'))
+
+const ballResp = [
+  'It is certain',
+  'It is decidedly so',
+  'Without a doubt',
+  'Yes definitely',
+  'You may rely on it',
+  'As I see it, yes',
+  'Most likely',
+  'Outlook good',
+  'Yes',
+  'Signs point to yes',
+  'Reply hazy try again',
+  'Ask again later',
+  'Better not tell you now',
+  'Cannot predict now',
+  'Concentrate and ask again',
+  'Don\'t count on it',
+  'My reply is no',
+  'My sources say no',
+  'Outlook not so good',
+  'Very doubtful'
+]
 
 let publicIP = {},
   ipServer,
@@ -137,6 +161,7 @@ client.on('message', message => {
     } else if (message.content.charAt(0) == '?') {							// Commands for all
       switch (messageSplit[0].slice(1)) {
       case 'fortune':
+        console.log('The future hates you')
         exec('fortune -s', (err, stdout) => {	// Executes the fortune command
           if (err) {
             console.log('Error encountered: ' + err)
@@ -146,7 +171,9 @@ client.on('message', message => {
           message.delete()
         })
         break
+
       case 'forune':
+        console.log('Regret\'s my name')
         exec('fortune forune', (err, stdout) => {	// Executes the fortune command
           if (err) {
             console.log('Error encountered: ' + err)
@@ -155,6 +182,17 @@ client.on('message', message => {
           message.channel.send(stdout, {'code': true})
           message.delete()
         })
+        break
+
+      case 'ball':
+        console.log('8ballin\'')
+        message.reply(ballResp[Math.floor(Math.random() * ballResp.length)])
+        break
+
+      case 'word':
+        console.log('Word')
+        message.channel.send(randomWord(), {'code': true})
+        message.delete()
         break
       }
     } else if (message.author.id == config.admin && message.content.charAt(0) == '$') {			// Commands for the few
