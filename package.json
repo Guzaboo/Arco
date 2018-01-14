@@ -1,6 +1,6 @@
 {
   "name": "arco",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "description": "Arco brings fear, what more could you want?",
   "main": "index.js",
   "dependencies": {

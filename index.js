@@ -10,11 +10,11 @@ const Discord = require('discord.js'),
   exec = require('child_process').exec
 
 math.import({
-  'import':     function () { throw new Error('Import is disabled') },
+  'import':     function () { throw new Error('Import is disabled')     },
   'createUnit': function () { throw new Error('CreateUnit is disabled') },
-  'eval':       function () { throw new Error('Eval is disabled') },
-  'parse':      function () { throw new Error('Parse is disabled') },
-  'simplify':   function () { throw new Error('Simplify is disabled') },
+  'eval':       function () { throw new Error('Eval is disabled')       },
+  'parse':      function () { throw new Error('Parse is disabled')      },
+  'simplify':   function () { throw new Error('Simplify is disabled')   },
   'derivative': function () { throw new Error('Derivative is disabled') }
 }, { override: true })
 
@@ -184,9 +184,21 @@ client.on('message', message => {
         })
         break
 
-      case 'ball':
+      case '🎱':
         console.log('8ballin\'')
-        message.reply(ballResp[Math.floor(Math.random() * ballResp.length)])
+        message.channel.send({ 'embed': {
+    'title': message.content.slice(1),
+    'description': ballResp[Math.floor(Math.random() * ballResp.length)],
+    'color': 0x000000,
+    'footer': {
+      'text': 'Asked by ' + message.author.username
+    },
+    'author': {
+      'name': client.username,
+      'icon_url': 'http://www.iconninja.com/files/776/590/392/ball-icon.png'
+    }
+  }})
+  message.delete()
         break
 
       case 'word':
