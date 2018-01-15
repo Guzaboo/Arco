@@ -1,11 +1,11 @@
 {
   "name": "arco",
-  "version": "2.7.3",
+  "version": "2.7.5",
   "description": "Arco brings fear, what more could you want?",
   "main": "index.js",
   "dependencies": {
-    "discord.js": "^11.2.1",
-    "mathjs": "^3.19.0",
+    "discord.js": "^11.3.0",
+    "mathjs": "^3.20.0",
     "profane": "^1.3.0",
     "random-word": "^2.0.0"
   },
