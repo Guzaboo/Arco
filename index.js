@@ -195,7 +195,7 @@ client.on('message', message => {
         'title': message.content.slice(2),
         'description': ballResp[Math.floor(Math.random() * ballResp.length)],
         'author': {
-          'name': client.username,
+          'name': client.user.username,
           'icon_url': 'http://www.iconninja.com/files/776/590/392/ball-icon.png'
         },
         'color': 0x000000,
