@@ -233,7 +233,7 @@ client.on('message', message => {
     } else if (message.content.substring(0, 2) == '🎱') {
       console.log('8ballin\'')
       message.channel.send({ 'embed': {
-        'title': message.content.slice(2),
+        'title': message.cleanContent.slice(2),
         'description': ballResp[Math.floor(Math.random() * ballResp.length)],
         'author': {
           'name': client.user.username,
