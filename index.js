@@ -134,16 +134,9 @@ client.on('message', message => {
     if (message.content.charAt(message.content.length - 1) === '?') {
       message.react('🤔')
     } else message.react('🙅')
-    if (message.content.includes('wn.nr')) {
-      message.delete()
-      return
-    }
   }
 
   if (!message.author.bot) {
-    // Start main processing
-
-    // Calculator abilities
     if (message.content.charAt(0) == '#') {
       console.log('////MATH TIME////')
       let mathInput = message.content.slice(1)
@@ -154,7 +147,7 @@ client.on('message', message => {
       try {
         message.channel.send(mathInput + ' returns ' + parser.eval(mathInput))
       } catch (err) {
-        message.channel.send(mathInput + ' returns ' + err)
+        message.channel.send(mathInput + ' errored with ' + err)
       }
 
 
@@ -246,7 +239,7 @@ client.on('message', message => {
       }})
       message.delete()
 
-    } else if (message.author.id == config.admin && message.content.charAt(0) == '$') {			// Commands for the few
+    } else if (message.author.id == config.admin && message.content.charAt(0) == '$') {
       let adminCommand = message.content.slice(1).split(' ')
       console.log('Admin Command Issued: ' + adminCommand)
 
@@ -265,7 +258,9 @@ client.on('message', message => {
           break
 
         case 'charAt':
-          console.log('Sweeping chat for messages with a \'' + adminCommand[3] + '\' character in the ' + adminCommand[2] + 'position...')
+          console.log('Sweeping chat for messages with a \'' + adminCommand[3] +
+            '\' character in the ' + adminCommand[2] + 'position...')
+
           message.channel.fetchMessages({limit:100}).then(messages => {
             let Victims = messages.filter(message => message.content.charAt(adminCommand[2]) == adminCommand[3])
 
@@ -273,23 +268,24 @@ client.on('message', message => {
           })
           break
 
-        case 'author':
+        case 'author': {
+          let sweepTargetUser = adminCommand.splice(2).join(' ')
+          console.log('Sweeping chat for messages from ' + sweepTargetUser + '...')
+
           message.channel.fetchMessages({limit:100}).then(messages => {
-            let sweepTargetUser = adminCommand.splice(2).join(' ')
-            console.log('Sweeping chat for messages from ' + sweepTargetUser + '...')
 
             let Victims = messages.filter(message => message.author.username == sweepTargetUser)
 
             message.channel.bulkDelete(Victims)
           })
           break
+        }
 
         default:
           if (adminCommand[1] != undefined) {
             console.log('Sweeping chat for ' + adminCommand[1] + ' messages...')
-          } else {
-            console.log('Removing past 100 messages...')
-          }
+          } else console.log('Removing past 100 messages...')
+
           message.channel.fetchMessages({limit:adminCommand[1]}).then(messages => {
             let Victims = messages
 
