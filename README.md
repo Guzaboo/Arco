@@ -14,6 +14,9 @@ Messages with a '$' prefix are treated as special commands. Currently, the only 
 
 Arco responds to messages containing a word in the ./node_modules/profane/lib/badwords.json file (present after installation) with "🚫 ¡LANGUAGE CENSORSHIP! 🚫", which is deleted after 2 seconds to prevent spam.
 
+4. ### Conversation Starters
+
+Arco includes a bunch of different conversation starters. I'll add examples later.
 
 ## Installation
 First, execute ```npm install``` in Arco's directory. Then, create a file called secrets.json and put a valid token inside.
