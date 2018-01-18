@@ -187,82 +187,117 @@ client.on('message', message => {
         break
 
       case 'word': {
-        console.log('Word')
+        console.log('Wordin\'')
         let word = randomWord()
         wordDefine.getDef(word, 'en', null, function(definition) {
-          message.channel.send(word + ': ' + definition.definition)
+
+          message.channel.send({ 'embed': {
+            'title': word.charAt(0).toUpperCase() + word.slice(1),
+            'description': definition.definition || 'No definition found.',
+            'author': {
+              'name': client.user.username,
+              'icon_url': 'http://icons.veryicon.com/png/System/Simple%202/accessories%20dictionary.png'
+            },
+            'color': 0xe14b57,
+            'footer': {
+              'text': 'Inspired by ' + message.author.username
+            }
+          }})
         })
+
         message.delete()
         break
       }
+
+      case 'define':
+        console.log('Definin\'')
+        wordDefine.getDef(messageSplit[1], 'en', null, function(definition) {
+
+          message.channel.send({ 'embed': {
+            'title': messageSplit[1].charAt(0).toUpperCase() + messageSplit[1].slice(1),
+            'description': definition.definition || 'No definition found.',
+            'author': {
+              'name': client.user.username,
+              'icon_url': 'http://icons.veryicon.com/png/System/Simple%202/accessories%20dictionary.png'
+            },
+            'color': 0xe14b57,
+            'footer': {
+              'text': 'Word directly provided by ' + message.author.username
+            }
+          }})
+        })
+
+        message.delete()
+        break
+
       }
-    } else if (message.content.substring(0, 2) == '🎱') {
-      console.log('8ballin\'')
-      message.channel.send({ 'embed': {
-        'title': message.content.slice(2),
-        'description': ballResp[Math.floor(Math.random() * ballResp.length)],
-        'author': {
-          'name': client.user.username,
-          'icon_url': 'http://www.iconninja.com/files/776/590/392/ball-icon.png'
-        },
-        'color': 0x000000,
-        'footer': {
-          'text': 'Asked by ' + message.author.username
+    }
+  } else if (message.content.substring(0, 2) == '🎱') {
+    console.log('8ballin\'')
+    message.channel.send({ 'embed': {
+      'title': message.content.slice(2),
+      'description': ballResp[Math.floor(Math.random() * ballResp.length)],
+      'author': {
+        'name': client.user.username,
+        'icon_url': 'http://www.iconninja.com/files/776/590/392/ball-icon.png'
+      },
+      'color': 0x000000,
+      'footer': {
+        'text': 'Asked by ' + message.author.username
+      }
+    }})
+    message.delete()
+
+  } else if (message.author.id == config.admin && message.content.charAt(0) == '$') {			// Commands for the few
+    let adminCommand = message.content.slice(1).split(' ')
+    console.log('Admin Command Issued: ' + adminCommand)
+
+    switch (adminCommand[0]) {
+    case 'sweep':
+      switch (adminCommand[1]) {
+      case 'content':
+        message.channel.fetchMessages({limit:100}).then(messages => {
+          let sweepTargetContent = adminCommand.splice(2).join(' ')
+          console.log('Sweeping chat for messages matching ' + sweepTargetContent + '...')
+
+          let Victims = messages.filter(message => message.content.includes(sweepTargetContent))
+
+          message.channel.bulkDelete(Victims)
+        })
+        break
+
+      case 'charAt':
+        console.log('Sweeping chat for messages with a \'' + adminCommand[3] + '\' character in the ' + adminCommand[2] + 'position...')
+        message.channel.fetchMessages({limit:100}).then(messages => {
+          let Victims = messages.filter(message => message.content.charAt(adminCommand[2]) == adminCommand[3])
+
+          message.channel.bulkDelete(Victims)
+        })
+        break
+
+      case 'author':
+        message.channel.fetchMessages({limit:100}).then(messages => {
+          let sweepTargetUser = adminCommand.splice(2).join(' ')
+          console.log('Sweeping chat for messages from ' + sweepTargetUser + '...')
+
+          let Victims = messages.filter(message => message.author.username == sweepTargetUser)
+
+          message.channel.bulkDelete(Victims)
+        })
+        break
+
+      default:
+        if (adminCommand[1] != undefined) {
+          console.log('Sweeping chat for ' + adminCommand[1] + ' messages...')
+        } else {
+          console.log('Removing past 100 messages...')
         }
-      }})
-      message.delete()
+        message.channel.fetchMessages({limit:adminCommand[1]}).then(messages => {
+          let Victims = messages
 
-    } else if (message.author.id == config.admin && message.content.charAt(0) == '$') {			// Commands for the few
-      let adminCommand = message.content.slice(1).split(' ')
-      console.log('Admin Command Issued: ' + adminCommand)
-
-      switch (adminCommand[0]) {
-      case 'sweep':
-        switch (adminCommand[1]) {
-        case 'content':
-          message.channel.fetchMessages({limit:100}).then(messages => {
-            let sweepTargetContent = adminCommand.splice(2).join(' ')
-            console.log('Sweeping chat for messages matching ' + sweepTargetContent + '...')
-
-            let Victims = messages.filter(message => message.content.includes(sweepTargetContent))
-
-            message.channel.bulkDelete(Victims)
-          })
-          break
-
-        case 'charAt':
-          console.log('Sweeping chat for messages with a \'' + adminCommand[3] + '\' character in the ' + adminCommand[2] + 'position...')
-          message.channel.fetchMessages({limit:100}).then(messages => {
-            let Victims = messages.filter(message => message.content.charAt(adminCommand[2]) == adminCommand[3])
-
-            message.channel.bulkDelete(Victims)
-          })
-          break
-
-        case 'author':
-          message.channel.fetchMessages({limit:100}).then(messages => {
-            let sweepTargetUser = adminCommand.splice(2).join(' ')
-            console.log('Sweeping chat for messages from ' + sweepTargetUser + '...')
-
-            let Victims = messages.filter(message => message.author.username == sweepTargetUser)
-
-            message.channel.bulkDelete(Victims)
-          })
-          break
-
-        default:
-          if (adminCommand[1] != undefined) {
-            console.log('Sweeping chat for ' + adminCommand[1] + ' messages...')
-          } else {
-            console.log('Removing past 100 messages...')
-          }
-          message.channel.fetchMessages({limit:adminCommand[1]}).then(messages => {
-            let Victims = messages
-
-            message.channel.bulkDelete(Victims)
-          })
-          break
-        }
+          message.channel.bulkDelete(Victims)
+        })
+        break
       }
     }
   }
