@@ -1,13 +1,14 @@
 {
   "name": "arco",
-  "version": "2.7.5",
+  "version": "2.8.0",
   "description": "Arco brings fear, what more could you want?",
   "main": "index.js",
   "dependencies": {
     "discord.js": "^11.3.0",
-    "mathjs": "^3.20.0",
+    "mathjs": "^3.20.1",
     "profane": "^1.3.0",
-    "random-word": "^2.0.0"
+    "random-word": "^2.0.0",
+    "word-definition": "^2.1.6"
   },
   "repository": {
     "type": "git",

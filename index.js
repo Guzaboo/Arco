@@ -5,6 +5,7 @@ const Discord = require('discord.js'),
   Profane = require('profane'),
   censor = new Profane(),
   randomWord = require('random-word'),
+  wordDefine = require('word-definition'),
   fs = require('fs'),
   http = require('http'),
   exec = require('child_process').exec
@@ -157,37 +158,43 @@ client.on('message', message => {
       }
 
 
-    } else if (message.content.charAt(0) == '?') {							// Commands for all
+    } else if (message.content.charAt(0) == '?') {
       switch (messageSplit[0].slice(1)) {
       case 'fortune':
         console.log('The future hates you')
-        exec('fortune -s', (err, stdout) => {	// Executes the fortune command
+        exec('fortune -s', {maxBuffer: 1024 * 2000}, (err, stdout) => {
           if (err) {
             console.log('Error encountered: ' + err)
           }
 
-          message.channel.send(stdout, {'code': true})
+          message.channel.send(stdout.match(/[\s\S]{1,1999}/) || [], {'code': true})
+
           message.delete()
         })
         break
 
       case 'forune':
         console.log('Regret\'s my name')
-        exec('fortune forune', (err, stdout) => {	// Executes the fortune command
+        exec('fortune forune', {maxBuffer: 1024 * 2000}, (err, stdout) => {
           if (err) {
             console.log('Error encountered: ' + err)
           }
 
-          message.channel.send(stdout, {'code': true})
+          message.channel.send(stdout.match(/[\s\S]{1,1999}/) || [], {'code': true})
+
           message.delete()
         })
         break
 
-      case 'word':
+      case 'word': {
         console.log('Word')
-        message.channel.send(randomWord(), {'code': true})
+        let word = randomWord()
+        wordDefine.getDef(word, 'en', null, function(definition) {
+          message.channel.send(word + ': ' + definition.definition)
+        })
         message.delete()
         break
+      }
       }
     } else if (message.content.substring(0, 2) == '🎱') {
       console.log('8ballin\'')
