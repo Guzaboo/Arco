@@ -111,12 +111,12 @@ client.on('message', message => {
     console.log('Checking: ' + messageSplit[i])
     console.log('Simplified: ' + simpleWord)
 
-    console.log('Has profanity: ' + (censor.hasWord(simpleWord || notSimpleWord || englishWords.indexOf(simpleWord) != 1 && englishWords.indexOf(simpleWord) < d || englishWords.indexOf(notSimpleWord) != 1 && englishWords.indexOf(notSimpleWord) < d))
+    console.log('Has profanity: ' + (censor.hasWord(simpleWord || notSimpleWord) || englishWords.indexOf(simpleWord) != 1 && englishWords.indexOf(simpleWord) < d || englishWords.indexOf(notSimpleWord) != 1 && englishWords.indexOf(notSimpleWord) < d))
     
     let d = Math.round((new Date().getTime() - 1516492800000) / 86400000 + 1)
     let notSimpleWord = simpleWord.replace(/[^\w\s]|(.)(?=\1)/gi, '')
     
-    if (censor.hasWord(simpleWord || notSimpleWord || englishWords.indexOf(simpleWord) != 1 && englishWords.indexOf(simpleWord) < d || englishWords.indexOf(notSimpleWord) != 1 && englishWords.indexOf(notSimpleWord) < d) {
+    if (censor.hasWord(simpleWord || notSimpleWord) || englishWords.indexOf(simpleWord) != 1 && englishWords.indexOf(simpleWord) < d || englishWords.indexOf(notSimpleWord) != 1 && englishWords.indexOf(notSimpleWord) < d) {
       message.react('🛑')
       message.reply({'content': '🚫 ¡LANGUAGE CENSORSHIP! 🚫', 'embed': {
         'title': '¡LANGUAGE CENSORSHIP!',
