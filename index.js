@@ -71,14 +71,13 @@ client.on('ready', () => {
 
   checkIPChange(publicIP)
   
-  let d = Math.round((new Date().getTime() - 1516492800000) / 86400000 + 1)
+  let d = Math.round((new Date().getTime() - 1516492800000/*milliseconds since 1/1/1970 on 1/21/2018*/) / 86400000/*milliseconds in one day*/ + 1)
   console.log("Currently censoring " + d + "random words.");
 })
 
 client.on('disconnect', event => {
   console.log('!Disconnected: ' + event.reason + ' (' + event.code + ')!')
 })
-
 
 
 // Public IP checker
@@ -110,13 +109,15 @@ client.on('message', message => {
 
     console.log('Checking: ' + messageSplit[i])
     console.log('Simplified: ' + simpleWord)
-
-    console.log('Has profanity: ' + (censor.hasWord(simpleWord || notSimpleWord) || englishWords.indexOf(simpleWord) != 1 && englishWords.indexOf(simpleWord) < d || englishWords.indexOf(notSimpleWord) != 1 && englishWords.indexOf(notSimpleWord) < d))
+    
+    let profane = (censor.hasWord(simpleWord || notSimpleWord) || englishWords.indexOf(simpleWord) != 1 && englishWords.indexOf(simpleWord) < d || englishWords.indexOf(notSimpleWord) != 1 && englishWords.indexOf(notSimpleWord) < d)
+    
+    console.log('Has profanity: ' + profane)
     
     let d = Math.round((new Date().getTime() - 1516492800000) / 86400000 + 1)
     let notSimpleWord = simpleWord.replace(/[^\w\s]|(.)(?=\1)/gi, '')
     
-    if (censor.hasWord(simpleWord || notSimpleWord) || englishWords.indexOf(simpleWord) != 1 && englishWords.indexOf(simpleWord) < d || englishWords.indexOf(notSimpleWord) != 1 && englishWords.indexOf(notSimpleWord) < d) {
+    if (profane) {
       message.react('🛑')
       message.reply({'content': '🚫 ¡LANGUAGE CENSORSHIP! 🚫', 'embed': {
         'title': '¡LANGUAGE CENSORSHIP!',
