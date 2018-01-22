@@ -106,7 +106,7 @@ client.on('message', message => {
 
   for (let i = 0; i < messageSplit.length; i++) {
     let simpleWord = messageSplit[i].replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,'').replace(/\s{2,}/g,' ').toLowerCase().replace(/0|&#1086;/gi,'o').replace(/1/gi,'i').replace(' ', '')
-
+    let notSimpleWord = simpleWord.replace(/[^\w\s]|(.)(?=\1)/gi, '')
     console.log('Checking: ' + messageSplit[i])
     console.log('Simplified: ' + simpleWord)
     
@@ -115,7 +115,7 @@ client.on('message', message => {
     console.log('Has profanity: ' + profane)
     
     let d = Math.round((new Date().getTime() - 1516492800000) / 86400000 + 1)
-    let notSimpleWord = simpleWord.replace(/[^\w\s]|(.)(?=\1)/gi, '')
+    
     
     if (profane) {
       message.react('🛑')
