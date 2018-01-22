@@ -48,7 +48,7 @@ let publicIP = {},
   ipServer,
   ipChannel
 
-let randCensors = {}
+const englishWords = JSON.parse(fs.readFileSync('randwords.txt'))
 
 fs.exists('publicIP.json', function (exists) {
   if (!exists) {
@@ -71,20 +71,15 @@ client.on('ready', () => {
 
   checkIPChange(publicIP)
   
-  let d = (new Date().getTime() - 1516492800000) / 86400000 + 1
-  for (let i = 0; i < d; i++) {
-    //generate a list of seeded random words and add them to randCensors
-  }
-  console.log("Currently censoring " + randCensors.length + "random words.");
+  let d = Math.round((new Date().getTime() - 1516492800000) / 86400000 + 1)
+  console.log("Currently censoring " + d + "random words.");
 })
 
 client.on('disconnect', event => {
   console.log('!Disconnected: ' + event.reason + ' (' + event.code + ')!')
 })
 
-setInterval(function newRandCensor(){
-            //generate the next seeded random word and add it to randCensors
-            }, 86400000)
+
 
 // Public IP checker
 let interval = 5 * 60 * 1000
@@ -116,9 +111,12 @@ client.on('message', message => {
     console.log('Checking: ' + messageSplit[i])
     console.log('Simplified: ' + simpleWord)
 
-    console.log('Has profanity: ' + censor.hasWord(simpleWord || simpleWord.replace(/[^\w\s]|(.)(?=\1)/gi, '')))
-
-    if (censor.hasWord(simpleWord || simpleWord.replace(/[^\w\s]|(.)(?=\1)/gi, ''))) {
+    console.log('Has profanity: ' + (censor.hasWord(simpleWord || notSimpleWord || englishWords.indexOf(simpleWord) != 1 && englishWords.indexOf(simpleWord) < d || englishWords.indexOf(notSimpleWord) != 1 && englishWords.indexOf(notSimpleWord) < d))
+    
+    let d = Math.round((new Date().getTime() - 1516492800000) / 86400000 + 1)
+    let notSimpleWord = simpleWord.replace(/[^\w\s]|(.)(?=\1)/gi, '')
+    
+    if (censor.hasWord(simpleWord || notSimpleWord || englishWords.indexOf(simpleWord) != 1 && englishWords.indexOf(simpleWord) < d || englishWords.indexOf(notSimpleWord) != 1 && englishWords.indexOf(notSimpleWord) < d) {
       message.react('🛑')
       message.reply({'content': '🚫 ¡LANGUAGE CENSORSHIP! 🚫', 'embed': {
         'title': '¡LANGUAGE CENSORSHIP!',
